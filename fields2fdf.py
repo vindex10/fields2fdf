@@ -8,19 +8,23 @@ def parse_fields(input_fields_file):
     with open(input_fields_file, "r") as input_f:
         field_name = None
         field_value = None
+        field_type = None
         for line in input_f:
             line = line.strip()
-            if line == "---" and field_name is not None and field_value is not None:
+            if line == "---" and field_name is not None and field_value is not None and field_type.lower() == "text":
                 fields.append((field_name, field_value))
                 print(fields[-1])
                 field_name = None
                 field_value = None
+                field_type = None
             elif line.startswith("FieldName:"):
                 field_name = line[len("FieldName: "):]
             elif line.startswith("FieldValue:"):
                 parsed_field_value = line[len("FieldValue: "):]
                 if parsed_field_value:
                     field_value = parsed_field_value
+            elif line.startswith("FieldType:"):
+                field_type = line[len("FieldType: "):]
     return fields
 
 
